@@ -1,19 +1,23 @@
-require_relative '../translate'
+require_relative '../translator'
 require 'rspec'
 
-describe '#translate' do
+describe Translator do
 
-  it 'translate from russian to english' do
-    expect(translate('Привет', 'en')).to eq 'Hi'
-    expect(translate('Привет мир!', 'en')).to eq 'Hello world!'
+  it 'translates from russian to english and outputs the result' do
+    expect { Translator.привет }.to output("hi\n").to_stdout
+    expect { Translator.send('Привет мир!') }.to output("Hello world!\n").to_stdout
   end
 
-  it 'translate from english to russian' do
-    expect(translate('Hello', 'ru')).to eq 'Привет'
-    expect(translate('Hello world!', 'ru')).to eq 'Всем привет!'
+  it 'translates from english to russian and outputs the result' do
+    expect { Translator.Hello('ru') }.to output("Привет\n").to_stdout
+    expect { Translator.send('Hello world!', 'ru') }.to output("Всем привет!\n").to_stdout
   end
 
-  it 'should not throw error if an error has occured' do
-    expect(translate('', 'ru')).to eq 'Не удалось получить перевод'
+  it 'returns false if method is exit' do
+    expect(Translator.exit).to eq false
+  end
+
+  it 'returns true if method is not exit' do
+    expect(Translator.ok).to eq true
   end
 end
